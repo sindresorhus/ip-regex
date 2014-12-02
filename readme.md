@@ -33,15 +33,15 @@ ipRegex.v6({exact: true}).test('1:2:3:4:5:6:7:8');
 
 ## API
 
-### isRegex(options)
+### ipRegex(options)
 
 Returns a regex for matching both IPv4 and IPv6.
 
-### isRegex.v4(options)
+### ipRegex.v4(options)
 
 Returns a regex for matching IPv4.
 
-### isRegex.v6(options)
+### ipRegex.v6(options)
 
 Returns a regex for matching IPv6.
 
