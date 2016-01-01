@@ -1,8 +1,7 @@
-'use strict';
-var test = require('ava');
-var ipRegex = require('./');
+import test from 'ava';
+import m from './';
 
-var v4 = [
+const v4 = [
 	'0.0.0.0',
 	'8.8.8.8',
 	'127.0.0.1',
@@ -21,7 +20,7 @@ var v4 = [
 	'173.194.34.134'
 ];
 
-var v4not = [
+const v4not = [
 	'.100.100.100.100',
 	'100..100.100.100.',
 	'100.100.100.100.',
@@ -34,7 +33,7 @@ var v4not = [
 	'999.2.3.4'
 ];
 
-var v6 = [
+const v6 = [
 	'1::',
 	'1::8',
 	'1::7:8',
@@ -53,69 +52,63 @@ var v6 = [
 	'1:2::8'
 ];
 
-var v6not = [
+const v6not = [
 	'1:2:3:4:5:6:1.2.3.4',
 	'::',
 	'1:',
 	':1'
 ];
 
-test('ip', function (t) {
-	v4.forEach(function (el) {
-		t.assert(ipRegex({exact: true}).test(el), el);
+test('ip', t => {
+	v4.forEach(x => {
+		t.true(m({exact: true}).test(x));
 	});
 
-	v4.forEach(function (el) {
-		t.assert((ipRegex().exec('foo ' + el + ' bar') || [])[0] === el, el);
+	v4.forEach(x => {
+		t.is((m().exec(`foo ${x} bar`) || [])[0], x);
 	});
 
-	v4not.forEach(function (el) {
-		t.assert(!ipRegex({exact: true}).test(el), el);
+	v4not.forEach(x => {
+		t.false(m({exact: true}).test(x));
 	});
 
-	v6.forEach(function (el) {
-		t.assert(ipRegex({exact: true}).test(el), el);
+	v6.forEach(x => {
+		t.true(m({exact: true}).test(x));
 	});
 
-	v6.forEach(function (el) {
-		t.assert((ipRegex().exec('foo ' + el + ' bar') || [])[0] === el, el);
+	v6.forEach(x => {
+		t.is((m().exec(`foo ${x} bar`) || [])[0], x);
 	});
 
-	v6not.forEach(function (el) {
-		t.assert(!ipRegex({exact: true}).test(el), el);
+	v6not.forEach(x => {
+		t.false(m({exact: true}).test(x));
 	});
-
-	t.end();
 });
 
-test('ip v4', function (t) {
-	v4.forEach(function (el) {
-		t.assert(ipRegex.v4({exact: true}).test(el), el);
+test('ip v4', t => {
+	v4.forEach(x => {
+		t.true(m.v4({exact: true}).test(x));
 	});
 
-	v4.forEach(function (el) {
-		t.assert((ipRegex.v4().exec('foo ' + el + ' bar') || [])[0] === el, el);
+	v4.forEach(x => {
+		t.is((m.v4().exec(`foo ${x} bar`) || [])[0], x);
 	});
 
-	v4not.forEach(function (el) {
-		t.assert(!ipRegex.v4({exact: true}).test(el), el);
+	v4not.forEach(x => {
+		t.false(m.v4({exact: true}).test(x));
 	});
-
-	t.end();
 });
 
-test('ip v6', function (t) {
-	v6.forEach(function (el) {
-		t.assert(ipRegex.v6({exact: true}).test(el), el);
+test('ip v6', t => {
+	v6.forEach(x => {
+		t.true(m.v6({exact: true}).test(x));
 	});
 
-	v6.forEach(function (el) {
-		t.assert((ipRegex.v6().exec('foo ' + el + ' bar') || [])[0] === el, el);
+	v6.forEach(x => {
+		t.is((m.v6().exec(`foo ${x} bar`) || [])[0], x);
 	});
 
-	v6not.forEach(function (el) {
-		t.assert(!ipRegex.v6({exact: true}).test(el), el);
+	v6not.forEach(x => {
+		t.false(m.v6({exact: true}).test(x));
 	});
-
-	t.end();
 });
