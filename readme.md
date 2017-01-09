@@ -53,6 +53,11 @@ Default: `false` *(Matches any IP address in a string)*
 Only match an exact string. Useful with `RegExp#test()` to check if a string is an IP address.
 
 
+## Related
+
+- [is-ip](https://github.com/sindresorhus/is-ip) - Check if a string is an IP address
+
+
 ## License
 
 MIT © [Sindre Sorhus](https://sindresorhus.com)
