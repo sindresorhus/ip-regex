@@ -1,6 +1,6 @@
 {
   "name": "ip-regex",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "Regular expression for matching IP addresses (IPv4 & IPv6)",
   "license": "MIT",
   "repository": "sindresorhus/ip-regex",
