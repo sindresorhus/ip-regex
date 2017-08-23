@@ -4,6 +4,7 @@
   "description": "Regular expression for matching IP addresses (IPv4 & IPv6)",
   "main": "./lib/index.js",
   "module": "index.js",
+  "browser": "./lib/index.js",
   "license": "MIT",
   "repository": "sindresorhus/ip-regex",
   "author": {
