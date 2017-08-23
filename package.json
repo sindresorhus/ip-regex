@@ -2,6 +2,9 @@
   "name": "ip-regex",
   "version": "2.1.0",
   "description": "Regular expression for matching IP addresses (IPv4 & IPv6)",
+  "main": "./lib/index.js",
+  "module": "index.js",
+  "browser": "./lib/index.js",
   "license": "MIT",
   "repository": "sindresorhus/ip-regex",
   "author": {
@@ -13,9 +16,12 @@
     "node": ">=4"
   },
   "scripts": {
+    "build": "babel index.js --presets babel-preset-es2015 --out-dir lib",
+    "prepublish": "npm run build",
     "test": "xo && ava"
   },
   "files": [
+    "lib",
     "index.js"
   ],
   "keywords": [
@@ -37,6 +43,8 @@
   ],
   "devDependencies": {
     "ava": "*",
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "xo": "*"
   },
   "xo": {
