@@ -6,7 +6,7 @@
 ## Install
 
 ```
-$ npm install --save ip-regex
+$ npm install ip-regex
 ```
 
 

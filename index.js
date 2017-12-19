@@ -16,9 +16,11 @@ const v6 = `
 )(%[0-9a-zA-Z]{1,})?                                           // %eth0            %1
 `.replace(/\s*\/\/.*$/gm, '').replace(/\n/g, '').trim();
 
-const ip = module.exports = opts => opts && opts.exact ?
+const ip = opts => opts && opts.exact ?
 	new RegExp(`(?:^${v4}$)|(?:^${v6}$)`) :
 	new RegExp(`(?:${v4})|(?:${v6})`, 'g');
 
 ip.v4 = opts => opts && opts.exact ? new RegExp(`^${v4}$`) : new RegExp(v4, 'g');
 ip.v6 = opts => opts && opts.exact ? new RegExp(`^${v6}$`) : new RegExp(v6, 'g');
+
+module.exports = ip;

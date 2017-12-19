@@ -1,5 +1,5 @@
 import test from 'ava';
-import m from './';
+import m from '.';
 
 const v4 = [
 	'0.0.0.0',
@@ -264,55 +264,55 @@ const v6not = [
 ];
 
 test('ip', t => {
-	v4.forEach(x => {
+	for (const x of v4) {
 		t.true(m({exact: true}).test(x));
-	});
+	}
 
-	v4.forEach(x => {
+	for (const x of v4) {
 		t.is((m().exec(`foo ${x} bar`) || [])[0], x);
-	});
+	}
 
-	v4not.forEach(x => {
+	for (const x of v4not) {
 		t.false(m({exact: true}).test(x));
-	});
+	}
 
-	v6.forEach(x => {
+	for (const x of v6) {
 		t.true(m({exact: true}).test(x));
-	});
+	}
 
-	v6.forEach(x => {
+	for (const x of v6) {
 		t.is((m().exec(`foo ${x} bar`) || [])[0], x);
-	});
+	}
 
-	v6not.forEach(x => {
+	for (const x of v6not) {
 		t.false(m({exact: true}).test(x));
-	});
+	}
 });
 
 test('ip v4', t => {
-	v4.forEach(x => {
+	for (const x of v4) {
 		t.true(m.v4({exact: true}).test(x));
-	});
+	}
 
-	v4.forEach(x => {
+	for (const x of v4) {
 		t.is((m.v4().exec(`foo ${x} bar`) || [])[0], x);
-	});
+	}
 
-	v4not.forEach(x => {
+	for (const x of v4not) {
 		t.false(m.v4({exact: true}).test(x));
-	});
+	}
 });
 
 test('ip v6', t => {
-	v6.forEach(x => {
+	for (const x of v6) {
 		t.true(m.v6({exact: true}).test(x));
-	});
+	}
 
-	v6.forEach(x => {
+	for (const x of v6) {
 		t.is((m.v6().exec(`foo ${x} bar`) || [])[0], x);
-	});
+	}
 
-	v6not.forEach(x => {
+	for (const x of v6not) {
 		t.false(m.v6({exact: true}).test(x));
-	});
+	}
 });
