@@ -56,6 +56,8 @@ Only match an exact string. Useful with `RegExp#test()` to check if a string is 
 ## Related
 
 - [is-ip](https://github.com/sindresorhus/is-ip) - Check if a string is an IP address
+- [is-cidr](https://github.com/silverwind/is-cidr) - Check if a string is an IP address in CIDR notation
+- [cidr-regex](https://github.com/silverwind/cidr-regex) - Regular expression for matching IP addresses in CIDR notation
 
 
 ## License
