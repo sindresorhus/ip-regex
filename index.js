@@ -1,5 +1,8 @@
 'use strict';
 
+const word = '[a-fA-F0-9:]';
+const b = `(?:(?<=\\s|^)(?=${word})|(?<=${word})(?=\\s|$))`;
+
 const v4 = '(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)){3}';
 
 const v6seg = '[0-9a-fA-F]{1,4}';
@@ -18,9 +21,9 @@ const v6 = `
 
 const ip = opts => opts && opts.exact ?
 	new RegExp(`(?:^${v4}$)|(?:^${v6}$)`) :
-	new RegExp(`(?:${v4})|(?:${v6})`, 'g');
+	new RegExp(`(?:${b}${v4}${b})|(?:${b}${v6}${b})`, 'g');
 
-ip.v4 = opts => opts && opts.exact ? new RegExp(`^${v4}$`) : new RegExp(v4, 'g');
-ip.v6 = opts => opts && opts.exact ? new RegExp(`^${v6}$`) : new RegExp(v6, 'g');
+ip.v4 = opts => opts && opts.exact ? new RegExp(`^${v4}$`) : new RegExp(`${b}${v4}${b}`, 'g');
+ip.v6 = opts => opts && opts.exact ? new RegExp(`^${v6}$`) : new RegExp(`${b}${v6}${b}`, 'g');
 
 module.exports = ip;
