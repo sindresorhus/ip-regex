@@ -14,7 +14,6 @@ This module targets Node.js 8 or later and the latest version of Chrome, Firefox
 
 ## Usage
 
-
 ```js
 const ipRegex = require('ip-regex');
 
