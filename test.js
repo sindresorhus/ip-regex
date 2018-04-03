@@ -30,7 +30,9 @@ const v4not = [
 	'123.123.123',
 	'http://123.123.123',
 	'1000.2.3.4',
-	'999.2.3.4'
+	'999.2.3.4',
+	'0000000192.168.0.200',
+	'192.168.0.2000000000'
 ];
 
 const v6 = [
@@ -260,7 +262,9 @@ const v6not = [
 	'1:2:3::4:5:6:7:8:9',
 	'::ffff:2.3.4',
 	'::ffff:257.1.2.3',
-	'::ffff:12345678901234567890.1.26'
+	'::ffff:12345678901234567890.1.26',
+	'2001:0000:1234:0000:0000:C1C0:ABCD:0876 0',
+	'02001:0000:1234:0000:0000:C1C0:ABCD:0876'
 ];
 
 test('ip', t => {
@@ -270,6 +274,10 @@ test('ip', t => {
 
 	for (const x of v4) {
 		t.is((m().exec(`foo ${x} bar`) || [])[0], x);
+	}
+
+	for (const x of v4) {
+		t.false(m().test(`foo${x}bar`));
 	}
 
 	for (const x of v4not) {
@@ -282,6 +290,10 @@ test('ip', t => {
 
 	for (const x of v6) {
 		t.is((m().exec(`foo ${x} bar`) || [])[0], x);
+	}
+
+	for (const x of v6) {
+		t.false(m().test(`foo${x}bar`));
 	}
 
 	for (const x of v6not) {
@@ -298,6 +310,10 @@ test('ip v4', t => {
 		t.is((m.v4().exec(`foo ${x} bar`) || [])[0], x);
 	}
 
+	for (const x of v4) {
+		t.false(m().test(`foo${x}bar`));
+	}
+
 	for (const x of v4not) {
 		t.false(m.v4({exact: true}).test(x));
 	}
@@ -310,6 +326,10 @@ test('ip v6', t => {
 
 	for (const x of v6) {
 		t.is((m.v6().exec(`foo ${x} bar`) || [])[0], x);
+	}
+
+	for (const x of v6) {
+		t.false(m().test(`foo${x}bar`));
 	}
 
 	for (const x of v6not) {
