@@ -9,7 +9,7 @@
 $ npm install ip-regex
 ```
 
-This module targets Node.js 8 or later and the latest version of Chrome, Firefox, and Safari. If you want support for older browsers, use version 2.1.0: `npm install ip-regex@2.1.0`
+This module targets Node.js 8.10.0 or later and the latest version of Chrome, Firefox, and Safari. If you want support for older browsers, use version 2.1.0: `npm install ip-regex@2.1.0`
 
 
 ## Usage
