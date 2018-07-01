@@ -1,7 +1,9 @@
 'use strict';
 
 const word = '[a-fA-F\\d:]';
-const b = `(?:(?<=\\s|^)(?=${word})|(?<=${word})(?=\\s|$))`;
+const b = opts => opts && opts.includeBoundaries ?
+	`(?:(?<=\\s|^)(?=${word})|(?<=${word})(?=\\s|$))` :
+	'';
 
 const v4 = '(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)){3}';
 
@@ -21,9 +23,9 @@ const v6 = `
 
 const ip = opts => opts && opts.exact ?
 	new RegExp(`(?:^${v4}$)|(?:^${v6}$)`) :
-	new RegExp(`(?:${b}${v4}${b})|(?:${b}${v6}${b})`, 'g');
+	new RegExp(`(?:${b(opts)}${v4}${b(opts)})|(?:${b(opts)}${v6}${b(opts)})`, 'g');
 
-ip.v4 = opts => opts && opts.exact ? new RegExp(`^${v4}$`) : new RegExp(`${b}${v4}${b}`, 'g');
-ip.v6 = opts => opts && opts.exact ? new RegExp(`^${v6}$`) : new RegExp(`${b}${v6}${b}`, 'g');
+ip.v4 = opts => opts && opts.exact ? new RegExp(`^${v4}$`) : new RegExp(`${b(opts)}${v4}${b(opts)}`, 'g');
+ip.v6 = opts => opts && opts.exact ? new RegExp(`^${v6}$`) : new RegExp(`${b(opts)}${v6}${b(opts)}`, 'g');
 
 module.exports = ip;

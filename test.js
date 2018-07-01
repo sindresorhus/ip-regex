@@ -30,10 +30,20 @@ const v4not = [
 	'123.123.123',
 	'http://123.123.123',
 	'1000.2.3.4',
-	'999.2.3.4',
-	'0000000192.168.0.200',
-	'192.168.0.2000000000'
+	'999.2.3.4'
 ];
+
+const v4boundaries = {
+	'0000000192.168.0.200': ['192.168.0.200'],
+	'192.168.0.2000000000': ['192.168.0.200']
+};
+
+const v4extract = {
+	'255.255.255.255 0.0.0.0': ['255.255.255.255', '0.0.0.0'],
+	'1.2.3.4, 6.7.8.9, 1.2.3.4-5.6.7.8': ['1.2.3.4', '6.7.8.9', '1.2.3.4', '5.6.7.8'],
+	'1.2.3.4 6.7.8.9 1.2.3.4 - 5.6.7.8': ['1.2.3.4', '6.7.8.9', '1.2.3.4', '5.6.7.8'],
+	'192.168.0.2000000000': ['192.168.0.200']
+};
 
 const v6 = [
 	'::',
@@ -262,10 +272,20 @@ const v6not = [
 	'1:2:3::4:5:6:7:8:9',
 	'::ffff:2.3.4',
 	'::ffff:257.1.2.3',
-	'::ffff:12345678901234567890.1.26',
-	'2001:0000:1234:0000:0000:C1C0:ABCD:0876 0',
-	'02001:0000:1234:0000:0000:C1C0:ABCD:0876'
+	'::ffff:12345678901234567890.1.26'
 ];
+
+const v6boundaries = {
+	'02001:0000:1234:0000:0000:C1C0:ABCD:0876': ['2001:0000:1234:0000:0000:C1C0:ABCD:0876'],
+	'fe80:0000:0000:0000:0204:61ff:fe9d:f156245': ['fe80:0000:0000:0000:0204:61ff:fe9d:f156']
+};
+
+const v6extract = {
+	'::1, ::2, ::3-::5': ['::1', '::2', '::3', '::5'],
+	'::1  ::2 ::3 - ::5': ['::1', '::2', '::3', '::5'],
+	'::ffff:192.168.1.1 1::1.2.3.4': ['::ffff:192.168.1.1', '1::1.2.3.4'],
+	'02001:0000:1234:0000:0000:C1C0:ABCD:0876 a::xyz': ['2001:0000:1234:0000:0000:C1C0:ABCD:0876', 'a::']
+};
 
 test('ip', t => {
 	for (const x of v4) {
@@ -277,7 +297,8 @@ test('ip', t => {
 	}
 
 	for (const x of v4) {
-		t.false(m().test(`foo${x}bar`));
+		t.true(m().test(`foo${x}bar`));
+		t.false(m({includeBoundaries: true}).test(`foo${x}bar`));
 	}
 
 	for (const x of v4not) {
@@ -293,11 +314,34 @@ test('ip', t => {
 	}
 
 	for (const x of v6) {
-		t.false(m().test(`foo${x}bar`));
+		t.true(m().test(`foo${x}bar`));
+		t.false(m({includeBoundaries: true}).test(`foo${x}bar`));
 	}
 
 	for (const x of v6not) {
 		t.false(m({exact: true}).test(x));
+	}
+
+	for (const x of Object.keys(v4boundaries)) {
+		t.true(m().test(x));
+		t.deepEqual(x.match(m()), v4boundaries[x]);
+		t.false(m({includeBoundaries: true}).test(x));
+		t.is(x.match(m({includeBoundaries: true})), null);
+	}
+
+	for (const x of Object.keys(v4extract)) {
+		t.deepEqual(x.match(m()), v4extract[x]);
+	}
+
+	for (const x of Object.keys(v6boundaries)) {
+		t.true(m().test(x));
+		t.deepEqual(x.match(m()), v6boundaries[x]);
+		t.false(m({includeBoundaries: true}).test(x));
+		t.is(x.match(m({includeBoundaries: true})), null);
+	}
+
+	for (const x of Object.keys(v6extract)) {
+		t.deepEqual(x.match(m()), v6extract[x]);
 	}
 });
 
@@ -311,11 +355,23 @@ test('ip v4', t => {
 	}
 
 	for (const x of v4) {
-		t.false(m().test(`foo${x}bar`));
+		t.true(m.v4().test(`foo${x}bar`));
+		t.false(m.v4({includeBoundaries: true}).test(`foo${x}bar`));
 	}
 
 	for (const x of v4not) {
 		t.false(m.v4({exact: true}).test(x));
+	}
+
+	for (const x of Object.keys(v4boundaries)) {
+		t.true(m.v4().test(x));
+		t.deepEqual(x.match(m.v4()), v4boundaries[x]);
+		t.false(m.v4({includeBoundaries: true}).test(x));
+		t.is(x.match(m.v4({includeBoundaries: true})), null);
+	}
+
+	for (const x of Object.keys(v4extract)) {
+		t.deepEqual(x.match(m.v4()), v4extract[x]);
 	}
 });
 
@@ -329,10 +385,22 @@ test('ip v6', t => {
 	}
 
 	for (const x of v6) {
-		t.false(m().test(`foo${x}bar`));
+		t.true(m.v6().test(`foo${x}bar`));
+		t.false(m.v6({includeBoundaries: true}).test(`foo${x}bar`));
 	}
 
 	for (const x of v6not) {
 		t.false(m.v6({exact: true}).test(x));
+	}
+
+	for (const x of Object.keys(v6boundaries)) {
+		t.true(m.v6().test(x));
+		t.deepEqual(x.match(m.v6()), v6boundaries[x]);
+		t.false(m.v6({includeBoundaries: true}).test(x));
+		t.is(x.match(m.v6({includeBoundaries: true})), null);
+	}
+
+	for (const x of Object.keys(v6extract)) {
+		t.deepEqual(x.match(m.v6()), v6extract[x]);
 	}
 });
