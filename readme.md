@@ -55,14 +55,18 @@ Returns a regex for matching IPv4.
 
 Returns a regex for matching IPv6.
 
-#### options.exact
+#### options
+
+Type: `Object`
+
+##### exact
 
 Type: `boolean`<br>
 Default: `false` *(Matches any IP address in a string)*
 
 Only match an exact string. Useful with `RegExp#test()` to check if a string is an IP address.
 
-#### options.includeBoundaries
+##### includeBoundaries
 
 Type: `boolean`<br>
 Default: `false`
