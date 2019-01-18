@@ -67,7 +67,8 @@ Only match an exact string. Useful with `RegExp#test()` to check if a string is 
 Type: `boolean`<br>
 Default: `false`
 
-Include boundaries in the RegExp. When active, `192.168.0.2000000000` will report an invalid ipv4 address. If this option is not set, the mentioned ipv4 address would report as valid (ignoring the trailing zeros).
+Include boundaries in the regex. When `true`, `192.168.0.2000000000` will report as an invalid IPv4 address. If this option is not set, the mentioned IPv4 address would report as valid (ignoring the trailing zeros).
+
 
 ## Related
 
