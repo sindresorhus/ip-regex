@@ -21,11 +21,16 @@ const v6 = `
 )(%[0-9a-zA-Z]{1,})?                                           // %eth0            %1
 `.replace(/\s*\/\/.*$/gm, '').replace(/\n/g, '').trim();
 
+// Pre-compile only the exact regexes because adding a global flag make regexes stateful
+const v46Exact = new RegExp(`(?:^${v4}$)|(?:^${v6}$)`);
+const v4exact = new RegExp(`^${v4}$`);
+const v6exact = new RegExp(`^${v6}$`);
+
 const ip = options => options && options.exact ?
-	new RegExp(`(?:^${v4}$)|(?:^${v6}$)`) :
+	v46Exact :
 	new RegExp(`(?:${b(options)}${v4}${b(options)})|(?:${b(options)}${v6}${b(options)})`, 'g');
 
-ip.v4 = options => options && options.exact ? new RegExp(`^${v4}$`) : new RegExp(`${b(options)}${v4}${b(options)}`, 'g');
-ip.v6 = options => options && options.exact ? new RegExp(`^${v6}$`) : new RegExp(`${b(options)}${v6}${b(options)}`, 'g');
+ip.v4 = options => options && options.exact ? v4exact : new RegExp(`${b(options)}${v4}${b(options)}`, 'g');
+ip.v6 = options => options && options.exact ? v6exact : new RegExp(`${b(options)}${v6}${b(options)}`, 'g');
 
 module.exports = ip;
