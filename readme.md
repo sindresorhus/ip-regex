@@ -1,7 +1,12 @@
-# ip-regex
+# Echosec Fork of ip-regex
 
 > Regular expression for matching IP addresses
 
+## Fork Details
+
+We forked this repo as we need to be able find IPs surrounded by punctuation, like a csv of ips.
+
+[DATA-431](https://echosec.atlassian.net/browse/DATA-431)
 
 ## Install
 

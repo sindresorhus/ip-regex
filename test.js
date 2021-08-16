@@ -1,6 +1,14 @@
 import test from 'ava';
 import ipRegex from '.';
 
+const commonFormatting = [
+	'0.0.0.0,8.8.8.8,127.0.0.1',
+	'This ip: 127.0.0.1!',
+	`0.0.0.0,
+	8.8.8.8,
+	127.0.0.1`
+];
+
 const v4 = [
 	'0.0.0.0',
 	'8.8.8.8',
@@ -286,6 +294,12 @@ const v6extract = {
 	'::ffff:192.168.1.1 1::1.2.3.4': ['::ffff:192.168.1.1', '1::1.2.3.4'],
 	'02001:0000:1234:0000:0000:C1C0:ABCD:0876 a::xyz': ['2001:0000:1234:0000:0000:C1C0:ABCD:0876', 'a::']
 };
+
+test('csv', t => {
+	for (const x of commonFormatting) {
+		t.true(ipRegex({includeBoundaries: true}).test(x));
+	}
+});
 
 test('ip', t => {
 	for (const x of v4) {
