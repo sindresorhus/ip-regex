@@ -1,22 +1,20 @@
-declare namespace ip {
-	interface Options {
-		/**
-		Only match an exact string. Useful with `RegExp#test()` to check if a string is an IP address. *(`false` matches any IP address in a string)*
+export interface Options {
+	/**
+	Only match an exact string. Useful with `RegExp#test()` to check if a string is an IP address. *(`false` matches any IP address in a string)*
 
-		@default false
-		*/
-		readonly exact?: boolean;
+	@default false
+	*/
+	readonly exact?: boolean;
 
-		/**
-		Include boundaries in the regex. When `true`, `192.168.0.2000000000` will report as an invalid IPv4 address. If this option is not set, the mentioned IPv4 address would report as valid (ignoring the trailing zeros).
+	/**
+	Include boundaries in the regex. When `true`, `192.168.0.2000000000` will report as an invalid IPv4 address. If this option is not set, the mentioned IPv4 address would report as valid (ignoring the trailing zeros).
 
-		@default false
-		*/
-		readonly includeBoundaries?: boolean;
-	}
+	@default false
+	*/
+	readonly includeBoundaries?: boolean;
 }
 
-declare const ip: {
+declare const ipRegex: {
 	/**
 	Regular expression for matching IP addresses.
 
@@ -24,7 +22,7 @@ declare const ip: {
 
 	@example
 	```
-	import ipRegex = require('ip-regex');
+	import ipRegex from 'ip-regex';
 
 	// Contains an IP address?
 	ipRegex().test('unicorn 192.168.0.1');
@@ -46,25 +44,25 @@ declare const ip: {
 	//=> null
 	```
 	*/
-	(options?: ip.Options): RegExp;
+	(options?: Options): RegExp;
 
 	/**
 	@returns A regex for matching IPv4.
 	*/
-	v4(options?: ip.Options): RegExp;
+	v4(options?: Options): RegExp;
 
 	/**
 	@returns A regex for matching IPv6.
 
 	@example
 	```
-	import ipRegex = require('ip-regex');
+	import ipRegex from 'ip-regex';
 
 	ipRegex.v6({exact: true}).test('1:2:3:4:5:6:7:8');
 	//=> true
 	```
 	*/
-	v6(options?: ip.Options): RegExp;
+	v6(options?: Options): RegExp;
 };
 
-export = ip;
+export default ipRegex;

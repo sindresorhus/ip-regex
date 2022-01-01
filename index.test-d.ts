@@ -1,7 +1,6 @@
 import {expectType} from 'tsd';
-import ipRegex = require('.');
+import ipRegex from './index.js';
 
-const options: ipRegex.Options = {};
 expectType<RegExp>(ipRegex());
 expectType<RegExp>(ipRegex({exact: true}));
 expectType<RegExp>(ipRegex({includeBoundaries: true}));

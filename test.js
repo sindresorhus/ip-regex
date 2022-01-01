@@ -1,5 +1,5 @@
 import test from 'ava';
-import ipRegex from '.';
+import ipRegex from './index.js';
 
 const v4 = [
 	'0.0.0.0',
@@ -17,7 +17,7 @@ const v4 = [
 	'192.0.2.235',
 	'99.198.122.146',
 	'46.51.197.88',
-	'173.194.34.134'
+	'173.194.34.134',
 ];
 
 const v4not = [
@@ -30,19 +30,19 @@ const v4not = [
 	'123.123.123',
 	'http://123.123.123',
 	'1000.2.3.4',
-	'999.2.3.4'
+	'999.2.3.4',
 ];
 
 const v4boundaries = {
 	'0000000192.168.0.200': ['192.168.0.200'],
-	'192.168.0.2000000000': ['192.168.0.200']
+	'192.168.0.2000000000': ['192.168.0.200'],
 };
 
 const v4extract = {
 	'255.255.255.255 0.0.0.0': ['255.255.255.255', '0.0.0.0'],
 	'1.2.3.4, 6.7.8.9, 1.2.3.4-5.6.7.8': ['1.2.3.4', '6.7.8.9', '1.2.3.4', '5.6.7.8'],
 	'1.2.3.4 6.7.8.9 1.2.3.4 - 5.6.7.8': ['1.2.3.4', '6.7.8.9', '1.2.3.4', '5.6.7.8'],
-	'192.168.0.2000000000': ['192.168.0.200']
+	'192.168.0.2000000000': ['192.168.0.200'],
 };
 
 const v6 = [
@@ -173,7 +173,7 @@ const v6 = [
 	'a:0:0:0:a:0:0:0',
 	'a:0:0:0:0:0:0:0',
 	'fe80::7:8%eth0',
-	'fe80::7:8%1'
+	'fe80::7:8%1',
 ];
 
 const v6not = [
@@ -272,135 +272,135 @@ const v6not = [
 	'1:2:3::4:5:6:7:8:9',
 	'::ffff:2.3.4',
 	'::ffff:257.1.2.3',
-	'::ffff:12345678901234567890.1.26'
+	'::ffff:12345678901234567890.1.26',
 ];
 
 const v6boundaries = {
 	'02001:0000:1234:0000:0000:C1C0:ABCD:0876': ['2001:0000:1234:0000:0000:C1C0:ABCD:0876'],
-	'fe80:0000:0000:0000:0204:61ff:fe9d:f156245': ['fe80:0000:0000:0000:0204:61ff:fe9d:f156']
+	'fe80:0000:0000:0000:0204:61ff:fe9d:f156245': ['fe80:0000:0000:0000:0204:61ff:fe9d:f156'],
 };
 
 const v6extract = {
 	'::1, ::2, ::3-::5': ['::1', '::2', '::3', '::5'],
 	'::1  ::2 ::3 - ::5': ['::1', '::2', '::3', '::5'],
 	'::ffff:192.168.1.1 1::1.2.3.4': ['::ffff:192.168.1.1', '1::1.2.3.4'],
-	'02001:0000:1234:0000:0000:C1C0:ABCD:0876 a::xyz': ['2001:0000:1234:0000:0000:C1C0:ABCD:0876', 'a::']
+	'02001:0000:1234:0000:0000:C1C0:ABCD:0876 a::xyz': ['2001:0000:1234:0000:0000:C1C0:ABCD:0876', 'a::'],
 };
 
 test('ip', t => {
-	for (const x of v4) {
-		t.true(ipRegex({exact: true}).test(x));
+	for (const fixture of v4) {
+		t.true(ipRegex({exact: true}).test(fixture));
 	}
 
-	for (const x of v4) {
-		t.is((ipRegex().exec(`foo ${x} bar`) || [])[0], x);
+	for (const fixture of v4) {
+		t.is((ipRegex().exec(`foo ${fixture} bar`) || [])[0], fixture);
 	}
 
-	for (const x of v4) {
-		t.true(ipRegex().test(`foo${x}bar`));
-		t.false(ipRegex({includeBoundaries: true}).test(`foo${x}bar`));
+	for (const fixture of v4) {
+		t.true(ipRegex().test(`foo${fixture}bar`));
+		t.false(ipRegex({includeBoundaries: true}).test(`foo${fixture}bar`));
 	}
 
-	for (const x of v4not) {
-		t.false(ipRegex({exact: true}).test(x));
+	for (const fixture of v4not) {
+		t.false(ipRegex({exact: true}).test(fixture));
 	}
 
-	for (const x of v6) {
-		t.true(ipRegex({exact: true}).test(x));
+	for (const fixture of v6) {
+		t.true(ipRegex({exact: true}).test(fixture));
 	}
 
-	for (const x of v6) {
-		t.is((ipRegex().exec(`foo ${x} bar`) || [])[0], x);
+	for (const fixture of v6) {
+		t.is((ipRegex().exec(`foo ${fixture} bar`) || [])[0], fixture);
 	}
 
-	for (const x of v6) {
-		t.true(ipRegex().test(`foo${x}bar`));
-		t.false(ipRegex({includeBoundaries: true}).test(`foo${x}bar`));
+	for (const fixture of v6) {
+		t.true(ipRegex().test(`foo${fixture}bar`));
+		t.false(ipRegex({includeBoundaries: true}).test(`foo${fixture}bar`));
 	}
 
-	for (const x of v6not) {
-		t.false(ipRegex({exact: true}).test(x));
+	for (const fixture of v6not) {
+		t.false(ipRegex({exact: true}).test(fixture));
 	}
 
-	for (const x of Object.keys(v4boundaries)) {
-		t.true(ipRegex().test(x));
-		t.deepEqual(x.match(ipRegex()), v4boundaries[x]);
-		t.false(ipRegex({includeBoundaries: true}).test(x));
-		t.is(x.match(ipRegex({includeBoundaries: true})), null);
+	for (const fixture of Object.keys(v4boundaries)) {
+		t.true(ipRegex().test(fixture));
+		t.deepEqual(fixture.match(ipRegex()), v4boundaries[fixture]);
+		t.false(ipRegex({includeBoundaries: true}).test(fixture));
+		t.is(fixture.match(ipRegex({includeBoundaries: true})), null);
 	}
 
-	for (const x of Object.keys(v4extract)) {
-		t.deepEqual(x.match(ipRegex()), v4extract[x]);
+	for (const fixture of Object.keys(v4extract)) {
+		t.deepEqual(fixture.match(ipRegex()), v4extract[fixture]);
 	}
 
-	for (const x of Object.keys(v6boundaries)) {
-		t.true(ipRegex().test(x));
-		t.deepEqual(x.match(ipRegex()), v6boundaries[x]);
-		t.false(ipRegex({includeBoundaries: true}).test(x));
-		t.is(x.match(ipRegex({includeBoundaries: true})), null);
+	for (const fixture of Object.keys(v6boundaries)) {
+		t.true(ipRegex().test(fixture));
+		t.deepEqual(fixture.match(ipRegex()), v6boundaries[fixture]);
+		t.false(ipRegex({includeBoundaries: true}).test(fixture));
+		t.is(fixture.match(ipRegex({includeBoundaries: true})), null);
 	}
 
-	for (const x of Object.keys(v6extract)) {
-		t.deepEqual(x.match(ipRegex()), v6extract[x]);
+	for (const fixture of Object.keys(v6extract)) {
+		t.deepEqual(fixture.match(ipRegex()), v6extract[fixture]);
 	}
 });
 
 test('ip v4', t => {
-	for (const x of v4) {
-		t.true(ipRegex.v4({exact: true}).test(x));
+	for (const fixture of v4) {
+		t.true(ipRegex.v4({exact: true}).test(fixture));
 	}
 
-	for (const x of v4) {
-		t.is((ipRegex.v4().exec(`foo ${x} bar`) || [])[0], x);
+	for (const fixture of v4) {
+		t.is((ipRegex.v4().exec(`foo ${fixture} bar`) || [])[0], fixture);
 	}
 
-	for (const x of v4) {
-		t.true(ipRegex.v4().test(`foo${x}bar`));
-		t.false(ipRegex.v4({includeBoundaries: true}).test(`foo${x}bar`));
+	for (const fixture of v4) {
+		t.true(ipRegex.v4().test(`foo${fixture}bar`));
+		t.false(ipRegex.v4({includeBoundaries: true}).test(`foo${fixture}bar`));
 	}
 
-	for (const x of v4not) {
-		t.false(ipRegex.v4({exact: true}).test(x));
+	for (const fixture of v4not) {
+		t.false(ipRegex.v4({exact: true}).test(fixture));
 	}
 
-	for (const x of Object.keys(v4boundaries)) {
-		t.true(ipRegex.v4().test(x));
-		t.deepEqual(x.match(ipRegex.v4()), v4boundaries[x]);
-		t.false(ipRegex.v4({includeBoundaries: true}).test(x));
-		t.is(x.match(ipRegex.v4({includeBoundaries: true})), null);
+	for (const fixture of Object.keys(v4boundaries)) {
+		t.true(ipRegex.v4().test(fixture));
+		t.deepEqual(fixture.match(ipRegex.v4()), v4boundaries[fixture]);
+		t.false(ipRegex.v4({includeBoundaries: true}).test(fixture));
+		t.is(fixture.match(ipRegex.v4({includeBoundaries: true})), null);
 	}
 
-	for (const x of Object.keys(v4extract)) {
-		t.deepEqual(x.match(ipRegex.v4()), v4extract[x]);
+	for (const fixture of Object.keys(v4extract)) {
+		t.deepEqual(fixture.match(ipRegex.v4()), v4extract[fixture]);
 	}
 });
 
 test('ip v6', t => {
-	for (const x of v6) {
-		t.true(ipRegex.v6({exact: true}).test(x));
+	for (const fixture of v6) {
+		t.true(ipRegex.v6({exact: true}).test(fixture));
 	}
 
-	for (const x of v6) {
-		t.is((ipRegex.v6().exec(`foo ${x} bar`) || [])[0], x);
+	for (const fixture of v6) {
+		t.is((ipRegex.v6().exec(`foo ${fixture} bar`) || [])[0], fixture);
 	}
 
-	for (const x of v6) {
-		t.true(ipRegex.v6().test(`foo${x}bar`));
-		t.false(ipRegex.v6({includeBoundaries: true}).test(`foo${x}bar`));
+	for (const fixture of v6) {
+		t.true(ipRegex.v6().test(`foo${fixture}bar`));
+		t.false(ipRegex.v6({includeBoundaries: true}).test(`foo${fixture}bar`));
 	}
 
-	for (const x of v6not) {
-		t.false(ipRegex.v6({exact: true}).test(x));
+	for (const fixture of v6not) {
+		t.false(ipRegex.v6({exact: true}).test(fixture));
 	}
 
-	for (const x of Object.keys(v6boundaries)) {
-		t.true(ipRegex.v6().test(x));
-		t.deepEqual(x.match(ipRegex.v6()), v6boundaries[x]);
-		t.false(ipRegex.v6({includeBoundaries: true}).test(x));
-		t.is(x.match(ipRegex.v6({includeBoundaries: true})), null);
+	for (const fixture of Object.keys(v6boundaries)) {
+		t.true(ipRegex.v6().test(fixture));
+		t.deepEqual(fixture.match(ipRegex.v6()), v6boundaries[fixture]);
+		t.false(ipRegex.v6({includeBoundaries: true}).test(fixture));
+		t.is(fixture.match(ipRegex.v6({includeBoundaries: true})), null);
 	}
 
-	for (const x of Object.keys(v6extract)) {
-		t.deepEqual(x.match(ipRegex.v6()), v6extract[x]);
+	for (const fixture of Object.keys(v6extract)) {
+		t.deepEqual(fixture.match(ipRegex.v6()), v6extract[fixture]);
 	}
 });
