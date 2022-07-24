@@ -5,7 +5,7 @@
 ## Install
 
 ```sh
-$ npm install ip-regex
+npm install ip-regex
 ```
 
 This module targets Node.js 12 or later and the latest version of Chrome, Firefox, and Safari. If you want support for older browsers, use version 2.1.0: `npm install ip-regex@2.1.0`
@@ -69,6 +69,12 @@ Type: `boolean`\
 Default: `false`
 
 Include boundaries in the regex. When `true`, `192.168.0.2000000000` will report as an invalid IPv4 address. If this option is not set, the mentioned IPv4 address would report as valid (ignoring the trailing zeros).
+
+## Important
+
+If you run the regex against untrusted user input in a server context, you should [give it a timeout](https://github.com/sindresorhus/super-regex).
+
+**I do not consider ReDoS a valid vulnerability for this package. It's simply not possible to make it fully ReDoS safe. It's up to the user to set a timeout for the regex if they accept untrusted user input.** However, I'm happy to accept pull requests to improve the regex.
 
 ## Related
 
