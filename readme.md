@@ -26,6 +26,16 @@ ipRegex({exact: true}).test('unicorn 192.168.0.1');
 ipRegex.v6({exact: true}).test('1:2:3:4:5:6:7:8');
 //=> true
 
+// Is an private IP address
+ipRegex({isPrivate: true}).test('unicorn 127.0.0.1 rainbow')
+//=> true
+
+ipRegex({exact: true, isPrivate: true}).test('unicorn 10.0.0.1')
+//=> false
+
+ipRegex({exact: true, isPrivate: true}).test('10.0.0.1')
+//=> true
+
 'unicorn 192.168.0.1 cake 1:2:3:4:5:6:7:8 rainbow'.match(ipRegex());
 //=> ['192.168.0.1', '1:2:3:4:5:6:7:8']
 
@@ -69,6 +79,12 @@ Type: `boolean`\
 Default: `false`
 
 Include boundaries in the regex. When `true`, `192.168.0.2000000000` will report as an invalid IPv4 address. If this option is not set, the mentioned IPv4 address would report as valid (ignoring the trailing zeros).
+
+##### isPrivate
+Type: boolean
+Default: false
+
+Check, if the given IPv4 is one of the [private address range](https://en.wikipedia.org/wiki/Private_network).
 
 ## Important
 

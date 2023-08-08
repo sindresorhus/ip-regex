@@ -12,6 +12,13 @@ export interface Options {
 	@default false
 	*/
 	readonly includeBoundaries?: boolean;
+
+	/**
+	Check if the provided IP is a private IP
+
+	@default false
+  */
+	readonly isPrivate?: boolean;
 }
 
 declare const ipRegex: {
